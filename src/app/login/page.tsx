@@ -83,6 +83,6 @@ export default function LoginPage(props: PageProps) {
   );
 }
 
-function onFormMount(ref: HTMLFormElement): void {
-  ref.noValidate = true;
+function onFormMount(ref: HTMLFormElement | null): void {
+  if (ref) ref.noValidate = true;
 }

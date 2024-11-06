@@ -1,4 +1,4 @@
-import { getGlobalServerData } from "@/lib/server/requestHelpers";
+import { getGlobalServerData } from "@/lib/server/app/requestHelpers";
 import ClientRootLayout from "./layout-client";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

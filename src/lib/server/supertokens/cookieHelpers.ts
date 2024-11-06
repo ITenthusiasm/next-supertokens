@@ -75,3 +75,30 @@ export function createHeadersFromTokens(tokens: Partial<Tokens>): Headers {
 
   return headers;
 }
+
+/**
+ * Similar to {@link createHeadersFromTokens}, but returns the auth cookies in an array instead of
+ * a `Headers` object. You should only use this function when you need to call Node's native
+ * {@link https://nodejs.org/api/http.html#responsesetheadername-value `response.setHeader`} method directly.
+ *
+ * (`pages` dir only)
+ *
+ * @example
+ * const cookies = createCookiesFromTokens({});
+ * response.setHeader("Set-Cookie", cookies);
+ */
+export function createCookiesFromTokens(tokens: Partial<Tokens>): string[] {
+  const cookies = [];
+  const { accessToken, refreshToken, antiCsrfToken } = tokens;
+
+  if (!accessToken) cookies.push(serialize(authCookieNames.access, "", deleteCookieSettings));
+  else cookies.push(serialize(authCookieNames.access, accessToken, createCookieSettings()));
+
+  if (!refreshToken) cookies.push(serialize(authCookieNames.refresh, "", deleteRefreshSettings));
+  else cookies.push(serialize(authCookieNames.refresh, refreshToken, createCookieSettings("refresh")));
+
+  if (!antiCsrfToken) cookies.push(serialize(authCookieNames.csrf, "", deleteCookieSettings));
+  else cookies.push(serialize(authCookieNames.csrf, antiCsrfToken, createCookieSettings()));
+
+  return cookies;
+}

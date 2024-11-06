@@ -1,4 +1,4 @@
-import { getGlobalServerData } from "@/lib/server/requestHelpers";
+import { getGlobalServerData } from "@/lib/server/app/requestHelpers";
 import ClientPrivate from "./page-client";
 
 /* -------------------- Browser -------------------- */

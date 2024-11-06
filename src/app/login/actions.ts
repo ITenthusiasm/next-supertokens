@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import SuperTokensHelpers from "@/lib/server/supertokens";
 import { authCookieNames, createCookieSettings } from "@/lib/server/supertokens/cookieHelpers";
 import { validateEmail, validatePassword } from "@/lib/utils/validation";
-import { getGlobalServerData } from "@/lib/server/requestHelpers";
+import { getGlobalServerData } from "@/lib/server/app/requestHelpers";
 import "@/lib/server/supertokens/initialize"; // Side-effect
 
 type LoginActionData = { [key in "banner" | "email" | "password"]?: string | null };

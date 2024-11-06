@@ -2,7 +2,7 @@
 
 import { redirect, RedirectType } from "next/navigation";
 import SuperTokensHelpers from "@/lib/server/supertokens";
-import { getGlobalServerData } from "@/lib/server/requestHelpers";
+import { getGlobalServerData } from "@/lib/server/app/requestHelpers";
 import { validateEmail, validatePassword } from "@/lib/utils/validation";
 import { commonRoutes } from "@/lib/utils/constants";
 import "@/lib/server/supertokens/initialize"; // Side-effect

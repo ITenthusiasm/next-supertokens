@@ -8,10 +8,12 @@ import "./Header.scss";
 
 interface HeaderProps {
   authenticated?: boolean;
+  /** The Next.js Router being used. Determines the URL of the `login`/`logout` buttons. */
+  router: "app" | "pages";
   children: (ReactElement<ComponentProps<typeof Link>> | false) | (ReactElement<ComponentProps<typeof Link>> | false)[];
 }
 
-function Header({ authenticated, children }: HeaderProps): ReactElement {
+function Header({ authenticated, router, children }: HeaderProps): ReactElement {
   const authAction = authenticated ? "logout" : "login";
 
   return (
@@ -20,7 +22,7 @@ function Header({ authenticated, children }: HeaderProps): ReactElement {
         <ul>
           {Children.map(children, (c) => (c && c.type === Link ? <li>{c}</li> : null))}
           <li>
-            <Link className="auth-button" href={`/${authAction}`}>
+            <Link className="auth-button" href={`/${router === "pages" ? "pages/" : ""}${authAction}`}>
               {authAction}
             </Link>
           </li>

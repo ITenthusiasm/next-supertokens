@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import { authPages } from "@/lib/utils/constants";
-import "./globals.scss";
+import "./global.scss";
 
 interface ClientRootLayoutProps {
   authenticated: boolean;
@@ -12,12 +12,12 @@ interface ClientRootLayoutProps {
 }
 
 export default function ClientRootLayout({ authenticated, children }: ClientRootLayoutProps) {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "";
 
   return (
     <>
       {!authPages.includes(pathname) && (
-        <Header authenticated={authenticated}>
+        <Header authenticated={authenticated} router="app">
           <Link href="/">Home</Link>
           {authenticated && <Link href="/private">Private</Link>}
         </Header>
