@@ -7,8 +7,8 @@ import { commonRoutes } from "@/lib/utils/constants";
 import { loginAction } from "./actions";
 
 // Styles
-import "@/app/auth-form.scss";
-import "./login.scss";
+import "@/styles/shared/auth-form.scss";
+import "@/styles/routes/login.scss";
 
 interface PageProps {
   searchParams: Promise<{ mode: "signin" | "signup" }>;

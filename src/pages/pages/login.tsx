@@ -13,10 +13,9 @@ import { createCookiesFromTokens } from "@/lib/server/supertokens/cookieHelpers"
 import { validateEmail, validatePassword } from "@/lib/utils/validation";
 import { commonRoutes } from "@/lib/utils/constants";
 
-// TODO: Use a file convention that's a middleground for both `app` and `pages`
 // Styles
-import "@/app/auth-form.scss";
-import "@/app/login/login.scss";
+import "@/styles/shared/auth-form.scss";
+import "@/styles/routes/login.scss";
 
 /* -------------------- Browser -------------------- */
 export default function LoginPage({ loader, action }: InferGetServerSidePropsType<typeof getServerSideProps>) {

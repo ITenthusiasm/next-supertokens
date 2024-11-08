@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import { authPages } from "@/lib/utils/constants";
-import "./global.scss";
+import "@/styles/shared/global.scss";
 
 interface ClientRootLayoutProps {
   authenticated: boolean;

@@ -7,7 +7,7 @@ import { sendEmailAction, passwordResetAction } from "./actions";
 import { commonRoutes } from "@/lib/utils/constants";
 
 // Styles
-import "@/app/auth-form.scss";
+import "@/styles/shared/auth-form.scss";
 
 interface PageProps {
   searchParams: Promise<{

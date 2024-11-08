@@ -5,7 +5,7 @@ import { useActionState } from "react";
 import { action } from "./actions";
 
 // Styles
-import "./private.scss";
+import "@/styles/routes/private.scss";
 
 interface ClientPrivateProps {
   user: Required<GlobalServerData>["user"];

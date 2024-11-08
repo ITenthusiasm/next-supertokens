@@ -7,7 +7,7 @@ import { methodNotAllowed } from "@/lib/server/pages/responseHelpers";
 import NavLayout from "@/components/pages/NavLayout";
 
 // Styles
-import "@/app/private/private.scss";
+import "@/styles/routes/private.scss";
 
 /* -------------------- Browser -------------------- */
 export default function Private({ loader, action }: InferGetServerSidePropsType<typeof getServerSideProps>) {
