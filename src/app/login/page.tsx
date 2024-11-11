@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { use, useActionState } from "react";
 import { commonRoutes } from "@/lib/utils/constants";
-import { loginAction } from "./actions";
+import { login } from "./actions";
 
 // Styles
 import "@/styles/shared/auth-form.scss";
@@ -19,12 +19,13 @@ interface PageProps {
 export default function LoginPage(props: PageProps) {
   const searchParams = use(props.searchParams);
   const mode = searchParams.mode === "signup" ? "signup" : "signin";
-  const [errors, formAction] = useActionState(loginAction, {});
+  const [errors, loginAction] = useActionState(login, {});
 
   // TODO: Is it possible to prevent form field resets when submitting with Server Actions?
+  // See: https://www.robinwieruch.de/react-server-action-reset-form/
   return (
     <main>
-      <form ref={onFormMount} action={formAction}>
+      <form ref={onFormMount} action={loginAction}>
         <h1>{`Sign ${mode === "signin" ? "In" : "Up"}`}</h1>
 
         {mode === "signin" ? (
@@ -38,7 +39,7 @@ export default function LoginPage(props: PageProps) {
         )}
 
         <hr />
-        {/* TODO: Delete `error.banner` when user does `Signin` --> `Signup` --> `Signin` */}
+        {/* TODO: Remove/reset `error.banner` when user does `Signin` --> `Signup` --> `Signin` */}
         {!!errors?.banner && mode !== "signup" && <div role="alert">{errors.banner}</div>}
 
         <label htmlFor="email">Email</label>

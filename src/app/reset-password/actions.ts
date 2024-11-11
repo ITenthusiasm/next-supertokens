@@ -7,20 +7,8 @@ import { validateEmail, validatePassword } from "@/lib/utils/validation";
 import { commonRoutes } from "@/lib/utils/constants";
 import "@/lib/server/supertokens/initialize"; // Side-effect
 
-type ActionData =
-  | undefined
-  | {
-      banner?: string | null;
-      email?: string | null;
-      password?: string | null;
-      "confirm-password"?: string | null;
-    };
-
 type SendEmailActionData = { email?: string | null };
-export async function sendEmailAction(
-  _previousState: SendEmailActionData,
-  formData: FormData,
-): Promise<SendEmailActionData> {
+export async function sendEmail(_previousState: SendEmailActionData, formData: FormData): Promise<SendEmailActionData> {
   const { user } = await getGlobalServerData();
   if (user) throw redirect("/", RedirectType.replace);
 
@@ -34,11 +22,11 @@ export async function sendEmailAction(
   throw redirect(`${commonRoutes.resetPassword}?mode=emailed`, RedirectType.push);
 }
 
-type PasswordResetActionData = { [key in "banner" | "password" | "confirm-password"]?: string | null };
-export async function passwordResetAction(
-  _previousState: PasswordResetActionData,
+type ResetPasswordActionData = { [key in "banner" | "password" | "confirm-password"]?: string | null };
+export async function resetPassword(
+  _previousState: ResetPasswordActionData,
   formData: FormData,
-): Promise<PasswordResetActionData> {
+): Promise<ResetPasswordActionData> {
   const { user } = await getGlobalServerData();
   if (user) throw redirect("/", RedirectType.replace);
 
@@ -46,7 +34,7 @@ export async function passwordResetAction(
   const formDataAsObject = Object.fromEntries(formData) as Record<string, string>;
   const { password, "confirm-password": confirmPassword, token = "" } = formDataAsObject;
 
-  const errors: ActionData = {};
+  const errors: ResetPasswordActionData = {};
   if (!password) errors.password = "New password is required";
   else if (!validatePassword(password)) {
     errors.password = "Password must contain at least 8 characters, including a number";

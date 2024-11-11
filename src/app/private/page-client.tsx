@@ -2,7 +2,7 @@
 
 // Primary Imports
 import { useActionState } from "react";
-import { action } from "./actions";
+import { reflectData } from "./actions";
 
 // Styles
 import "@/styles/routes/private.scss";
@@ -12,7 +12,7 @@ interface ClientPrivateProps {
 }
 
 export default function ClientPrivate({ user }: ClientPrivateProps) {
-  const [response, formAction] = useActionState(action, undefined);
+  const [response, formAction] = useActionState(reflectData, undefined);
 
   return (
     <div id="private-page">

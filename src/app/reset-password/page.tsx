@@ -3,7 +3,7 @@
 // Primary Imports
 import Link from "next/link";
 import { use, useActionState } from "react";
-import { sendEmailAction, passwordResetAction } from "./actions";
+import { sendEmail, resetPassword } from "./actions";
 import { commonRoutes } from "@/lib/utils/constants";
 
 // Styles
@@ -20,8 +20,8 @@ interface PageProps {
 export default function ResetPassword(props: PageProps) {
   const searchParams = use(props.searchParams);
   const { mode, token } = searchParams;
-  const [attemptErrors, attemptAction] = useActionState(passwordResetAction, {});
-  const [requestErrors, requestAction] = useActionState(sendEmailAction, {});
+  const [sendEmailErrors, sendEmailAction] = useActionState(sendEmail, {});
+  const [resetPasswordErrors, resetPasswordAction] = useActionState(resetPassword, {});
 
   if (mode === "success") {
     return (
@@ -40,10 +40,10 @@ export default function ResetPassword(props: PageProps) {
   if (token) {
     return (
       <main>
-        <form ref={onFormMount} action={attemptAction}>
+        <form ref={onFormMount} action={resetPasswordAction}>
           <h1>Change your password</h1>
           <h2>Enter a new password below to change your password</h2>
-          {attemptErrors.banner && <div role="alert">{attemptErrors.banner}</div>}
+          {resetPasswordErrors.banner && <div role="alert">{resetPasswordErrors.banner}</div>}
 
           <label htmlFor="password">New password</label>
           <input
@@ -53,11 +53,11 @@ export default function ResetPassword(props: PageProps) {
             placeholder="New password"
             pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}"
             required
-            aria-invalid={!!attemptErrors.password}
+            aria-invalid={!!resetPasswordErrors.password}
             aria-describedby="password-error"
           />
           <div id="password-error" role="alert">
-            {attemptErrors.password}
+            {resetPasswordErrors.password}
           </div>
 
           <label htmlFor="confirm-password">Confirm password</label>
@@ -67,14 +67,14 @@ export default function ResetPassword(props: PageProps) {
             type="password"
             placeholder="Confirm your password"
             required
-            aria-invalid={!!attemptErrors["confirm-password"]}
+            aria-invalid={!!resetPasswordErrors["confirm-password"]}
             aria-describedby="confirm-password-error"
           />
           <div id="confirm-password-error" role="alert">
-            {attemptErrors["confirm-password"]}
+            {resetPasswordErrors["confirm-password"]}
           </div>
 
-          {!!token && <input name="token" type="hidden" value={token} />}
+          <input name="token" type="hidden" value={token} />
           <button type="submit">CHANGE PASSWORD</button>
         </form>
       </main>
@@ -93,7 +93,7 @@ export default function ResetPassword(props: PageProps) {
 
   return (
     <main>
-      <form ref={onFormMount} action={requestAction}>
+      <form ref={onFormMount} action={sendEmailAction}>
         <h1>Reset your password</h1>
         <h2>We will send you an email to reset your password</h2>
 
@@ -103,11 +103,11 @@ export default function ResetPassword(props: PageProps) {
           name="email"
           type="email"
           required
-          aria-invalid={!!requestErrors.email}
+          aria-invalid={!!sendEmailErrors.email}
           aria-describedby="email-error"
         />
         <div id="email-error" role="alert">
-          {requestErrors.email}
+          {sendEmailErrors.email}
         </div>
 
         <button type="submit">Email me</button>

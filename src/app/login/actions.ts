@@ -10,7 +10,7 @@ import "@/lib/server/supertokens/initialize"; // Side-effect
 
 type LoginActionData = { [key in "banner" | "email" | "password"]?: string | null };
 
-export async function loginAction(_previousState: LoginActionData, formData: FormData): Promise<LoginActionData> {
+export async function login(_previousState: LoginActionData, formData: FormData): Promise<LoginActionData> {
   const { user, url } = await getGlobalServerData();
   if (user) throw redirect("/", RedirectType.replace);
 
