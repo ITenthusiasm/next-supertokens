@@ -1,4 +1,7 @@
-:is(body, body > #__next) > header {
+// App Router
+body > header,
+// Pages Router
+body > #__next > header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
