@@ -18,7 +18,7 @@ export const authPages: string[] = [
   commonRoutes.loginThirdParty,
 ];
 
-/** Header used for passing global data between the Next.js App Router server functions */
+/** Header used for passing global data between the Next.js server functions */
 export const SERVER_DATA_HEADER = "X-GLOBAL-SERVER-DATA";
 
 /**
