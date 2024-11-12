@@ -49,9 +49,12 @@ export async function middleware(request: NextRequest) {
     const userNeedsSessionRefresh = error.type === Session.Error.TRY_REFRESH_TOKEN;
     const { nextUrl } = request;
 
+    const refreshPath =
+      `${nextUrl.pathname.startsWith("/pages") ? "/pages" : ""}${commonRoutes.refreshSession}` as const;
+
     const requestAllowed =
       publicPages.includes(nextUrl.pathname as (typeof publicPages)[number]) ||
-      (userNeedsSessionRefresh && nextUrl.pathname === commonRoutes.refreshSession);
+      (userNeedsSessionRefresh && nextUrl.pathname === refreshPath);
 
     if (requestAllowed) {
       const globalServerData: GlobalServerData = { url: request.url };
@@ -59,7 +62,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next({ request: { headers: request.headers } });
     }
 
-    const basePath = userNeedsSessionRefresh ? commonRoutes.refreshSession : commonRoutes.login;
+    const basePath = userNeedsSessionRefresh ? refreshPath : commonRoutes.login;
     const returnUrl = encodeURI(`${nextUrl.pathname}${nextUrl.search}`);
     const redirectUrl = `${basePath}?returnUrl=${returnUrl}`;
 
@@ -72,10 +75,9 @@ export async function middleware(request: NextRequest) {
       return new Response(null, { status: 204, headers });
     }
 
-    const headers = userNeedsSessionRefresh ? undefined : createHeadersFromTokens({});
     return NextResponse.redirect(new URL(redirectUrl, request.url), {
       status: userNeedsSessionRefresh ? 307 : 303,
-      headers,
+      headers: userNeedsSessionRefresh ? undefined : createHeadersFromTokens({}),
     });
   }
 }
@@ -85,11 +87,10 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };
