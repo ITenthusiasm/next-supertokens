@@ -7,7 +7,7 @@ import { createFormValidityObserver } from "@form-observer/react";
 import type { ValidatableField } from "@form-observer/react";
 import { useFormAction } from "@/lib/utils/pages/hooks";
 import SuperTokensHelpers from "@/lib/server/supertokens";
-import { getFormData, getGlobalServerData } from "@/lib/server/pages/requestHelpers";
+import { getGlobalServerData, getFormData } from "@/lib/server/pages/requestHelpers";
 import { redirect, methodNotAllowed } from "@/lib/server/pages/responseHelpers";
 import { createCookiesFromTokens } from "@/lib/server/supertokens/cookieHelpers";
 import { validateEmail, validatePassword } from "@/lib/utils/validation";

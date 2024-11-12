@@ -105,7 +105,7 @@ export default function ResetPassword({ loader, action }: InferGetServerSideProp
           </div>
 
           <input name="mode" type="hidden" value={mode} />
-          {!!token && <input name="token" type="hidden" value={token} />}
+          <input name="token" type="hidden" value={token} />
           <button type="submit">CHANGE PASSWORD</button>
         </form>
       </main>
