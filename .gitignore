@@ -2,6 +2,7 @@
 
 # Our Own Project Ignores
 .env
+src
 
 # Playwright
 /test-results/

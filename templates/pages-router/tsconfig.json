@@ -1,0 +1,29 @@
+// NOTE: This is a "dummy" TSConfig used only for convenience. The real config is at the root of this project.
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true,
+    "skipLibCheck": false,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/*": ["./*"],
+      // Explicit Resolution for Symbolic Links relying on Augmented TS Import Paths
+      "@/lib/server/supertokens/initialize": ["../app-router/lib/server/supertokens/initialize.ts"],
+      "@/lib/server/supertokens": ["../app-router/lib/server/supertokens/index.ts"],
+      "@/lib/utils/validation": ["../app-router/lib/utils/validation.ts"]
+    }
+  },
+  "include": ["../../next-env.d.ts", "**/*.ts", "**/*.tsx", "../../.next/types/**/*.ts", "../app-router/app.d.ts"],
+  "exclude": ["node_modules"]
+}

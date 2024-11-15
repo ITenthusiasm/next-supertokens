@@ -1,0 +1,25 @@
+// NOTE: This is a "dummy" TSConfig used only for convenience. The real config is at the root of this project.
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true,
+    "skipLibCheck": false,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": ["../../next-env.d.ts", "**/*.ts", "**/*.tsx", "../../.next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
