@@ -1,9 +1,10 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import "dotenv/config";
 
 const root = path.resolve(new URL(import.meta.url).pathname, "../../");
 const commandLineArguments = process.argv.slice(2);
-const [router] = commandLineArguments;
+const router = commandLineArguments[0] ?? process.env.ROUTER;
 
 if (router !== "app" && router !== "pages") {
   console.error('Error: `use-router` script must be called with a valid router ("app" or "pages")\n');
