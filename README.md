@@ -2,6 +2,8 @@
 
 A repository for exemplifying/testing Next.js usage with SuperTokens
 
+**_NOTE: THIS IS STILL A WORK IN PROGRESS! USE AT YOUR OWN RISK!_**
+
 ---
 
 <details>
