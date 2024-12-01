@@ -74,7 +74,6 @@ export default function ResetPassword(props: PageProps) {
             {resetPasswordErrors["confirm-password"]}
           </div>
 
-          <input name="token" type="hidden" value={token} />
           <button type="submit">CHANGE PASSWORD</button>
         </form>
       </main>
