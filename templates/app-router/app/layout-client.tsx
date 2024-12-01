@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import { authPages } from "@/lib/utils/constants";
 import "@/app/global.scss";
+import "@/app/tailwind.css";
 
 interface ClientRootLayoutProps {
   authenticated: boolean;
