@@ -2,7 +2,9 @@
 
 // Primary Imports
 import Link from "next/link";
-import { use, useActionState } from "react";
+import { use, useActionState, useState, useEffect, useMemo, startTransition } from "react";
+import { createFormValidityObserver } from "@form-observer/react";
+import { getServerActionProps } from "@/lib/utils/nextisms";
 import { commonRoutes } from "@/lib/utils/constants";
 import { login } from "./actions";
 
@@ -19,13 +21,38 @@ interface PageProps {
 export default function LoginPage(props: PageProps) {
   const searchParams = use(props.searchParams);
   const mode = searchParams.mode === "signup" ? "signup" : "signin";
-  const [errors, loginAction] = useActionState(login, {});
 
-  // TODO: Is it possible to prevent form field resets when submitting with Server Actions?
+  const [serverErrors, loginAction] = useActionState(login, {});
+  const [errors, setErrors] = useState(serverErrors);
+  useEffect(() => setErrors(serverErrors), [serverErrors]); // Keep server/client errors in sync
+  useEffect(() => setErrors({}), [mode]); // Clear errors when authentication mode changes
+
+  // Manage form errors
+  const required = (field: HTMLInputElement) => `${field.labels?.[0].textContent} is required`;
+  const { autoObserve, configure, validateFields } = useMemo(() => {
+    return createFormValidityObserver("focusout", {
+      renderByDefault: true,
+      renderer(errorContainer, errorMessage) {
+        const fieldName = errorContainer.id.replace(/-error$/, "");
+        setErrors((e) => ({ ...e, [fieldName]: errorMessage }));
+      },
+    });
+  }, []);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const success = await validateFields({ focus: true });
+
+    if (!success) return;
+    startTransition(() => loginAction(formData));
+  }
+
+  // TODO: Prevent form field resets when submitting with Server Actions
   // See: https://www.robinwieruch.de/react-server-action-reset-form/
   return (
     <main>
-      <form ref={onFormMount} action={loginAction}>
+      <form ref={useMemo(autoObserve, [autoObserve])} {...getServerActionProps(loginAction)} onSubmit={handleSubmit}>
         <h1>{`Sign ${mode === "signin" ? "In" : "Up"}`}</h1>
 
         {mode === "signin" ? (
@@ -39,18 +66,26 @@ export default function LoginPage(props: PageProps) {
         )}
 
         <hr />
-        {/* TODO: Remove/reset `error.banner` when user does `Signin` --> `Signup` --> `Signin` */}
-        {!!errors?.banner && mode !== "signup" && <div role="alert">{errors.banner}</div>}
+        {!!errors?.banner && <div role="alert">{errors.banner}</div>}
 
         <label htmlFor="email">Email</label>
         <input
           id="email"
-          name="email"
           placeholder="Email Address"
-          type="email"
-          required
           aria-invalid={!!errors?.email}
           aria-describedby="email-error"
+          {...configure("email", {
+            required,
+            type: { value: "email", message: "Email is invalid" },
+            async validate({ value }: HTMLInputElement) {
+              // Check email existence for `signup`s
+              if (mode !== "signup") return;
+
+              const response = await fetch(`/api/email-exists?email=${value}`);
+              const emailExists = (await response.json()) as boolean;
+              if (emailExists) return "This email already exists. Please sign in instead.";
+            },
+          })}
         />
         <div id="email-error" role="alert">
           {errors.email}
@@ -59,13 +94,20 @@ export default function LoginPage(props: PageProps) {
         <label htmlFor="password">Password</label>
         <input
           id="password"
-          name="password"
           placeholder="Password"
           type="password"
-          pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}"
-          required
           aria-invalid={!!errors?.password}
           aria-describedby="password-error"
+          {...configure("password", {
+            required,
+            pattern:
+              mode === "signin"
+                ? undefined
+                : {
+                    value: "(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}",
+                    message: "Password must contain at least 8 characters, including a number",
+                  },
+          })}
         />
         <div id="password-error" role="alert">
           {errors.password}
@@ -82,8 +124,4 @@ export default function LoginPage(props: PageProps) {
       </form>
     </main>
   );
-}
-
-function onFormMount(ref: HTMLFormElement | null): void {
-  if (ref) ref.noValidate = true;
 }
