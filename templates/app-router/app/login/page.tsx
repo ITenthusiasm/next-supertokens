@@ -48,8 +48,6 @@ export default function LoginPage(props: PageProps) {
     startTransition(() => loginAction(formData));
   }
 
-  // TODO: Prevent form field resets when submitting with Server Actions
-  // See: https://www.robinwieruch.de/react-server-action-reset-form/
   return (
     <main>
       <form ref={useMemo(autoObserve, [autoObserve])} {...getServerActionProps(loginAction)} onSubmit={handleSubmit}>

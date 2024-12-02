@@ -14,6 +14,8 @@ interface ClientPrivateProps {
 export default function ClientPrivate({ user }: ClientPrivateProps) {
   const [response, formAction] = useActionState(reflectData, undefined);
 
+  // TODO: Prevent form field resets when submitting with Server Actions
+  // See: https://www.robinwieruch.de/react-server-action-reset-form/
   return (
     <div id="private-page">
       <h1>Hello! This page is private! 🤫 Your user id: {user.id}</h1>
