@@ -77,11 +77,11 @@ export default function ClientPasswordlessLogin({ mode, contact }: ClientPasswor
             type="text"
             inputMode="numeric"
             required
-            aria-invalid={!!errors?.code}
+            aria-invalid={!!errors.code}
             aria-describedby="code-error"
           />
           <div id="code-error" role="alert">
-            {errors?.code}
+            {errors.code}
           </div>
 
           <button type="submit">Sign In</button>
@@ -108,14 +108,14 @@ export default function ClientPasswordlessLogin({ mode, contact }: ClientPasswor
           id={contact}
           inputMode={contact === "phoneNumber" ? "numeric" : undefined}
           required
-          aria-invalid={!!errors?.[contact]}
+          aria-invalid={!!errors[contact]}
           aria-describedby={`${contact}-error`}
           {...configure(contact, {
             type: contact === "email" ? { value: "email", message: "Email is invalid" } : "text",
           })}
         />
         <div id={`${contact}-error`} role="alert">
-          {errors?.[contact]}
+          {errors[contact]}
         </div>
 
         <button type="submit">Continue</button>

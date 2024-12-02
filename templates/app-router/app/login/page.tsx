@@ -66,13 +66,13 @@ export default function LoginPage(props: PageProps) {
         )}
 
         <hr />
-        {!!errors?.banner && <div role="alert">{errors.banner}</div>}
+        {!!errors.banner && <div role="alert">{errors.banner}</div>}
 
         <label htmlFor="email">Email</label>
         <input
           id="email"
           placeholder="Email Address"
-          aria-invalid={!!errors?.email}
+          aria-invalid={!!errors.email}
           aria-describedby="email-error"
           {...configure("email", {
             required,
@@ -96,7 +96,7 @@ export default function LoginPage(props: PageProps) {
           id="password"
           placeholder="Password"
           type="password"
-          aria-invalid={!!errors?.password}
+          aria-invalid={!!errors.password}
           aria-describedby="password-error"
           {...configure("password", {
             required,
