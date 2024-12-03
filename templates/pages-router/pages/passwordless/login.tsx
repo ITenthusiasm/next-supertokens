@@ -237,7 +237,7 @@ export const getServerSideProps = (async ({ req, query, resolvedUrl, res }) => {
         serialize(deviceCookieNames.preAuthSessionId, code.preAuthSessionId, cookieSettings),
       ]);
 
-      const url = new URL(resolvedUrl, "https://example.com/");
+      const url = new URL(resolvedUrl, process.env.DOMAIN);
       url.searchParams.set("mode", flow === "link" ? "messaged" : "code-signin");
       if (flow === "link") url.searchParams.delete("returnUrl"); // `returnUrl` is no longer relevant in this case
 
