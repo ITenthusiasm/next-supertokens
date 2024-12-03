@@ -1,4 +1,5 @@
 import type { IncomingMessage } from "node:http";
+import type { ParsedUrlQuery } from "node:querystring";
 import { SERVER_DATA_HEADER } from "@/lib/utils/constants";
 
 export function getGlobalServerData(request: IncomingMessage): GlobalServerData {
@@ -20,4 +21,17 @@ export function getFormData(request: IncomingMessage): Promise<URLSearchParams> 
   request.once("error", (error) => reject(error));
 
   return promise;
+}
+
+/** Converts Node's {@link ParsedUrlQuery} to the web-standard {@link URLSearchParams} */
+export function convertQueryToSearchParams(query: ParsedUrlQuery): URLSearchParams {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(query).forEach(([key, value]) => {
+    if (!value) return;
+    if (typeof value === "string") return searchParams.set(key, value);
+    return value.forEach((v) => searchParams.append(key, v));
+  });
+
+  return searchParams;
 }

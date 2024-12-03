@@ -8,14 +8,16 @@ import { JS_REQUEST_HEADER, REDIRECT_LOCATION_HEADER, REDIRECT_STATUS_HEADER } f
  *
  * @param {T} initialState The initial state of the server action data
  */
-export function useFormAction<T>(initialState: T): [T, (form: HTMLFormElement) => Promise<void>] {
+export function useFormAction<T>(
+  initialState: T,
+): [T, (form: HTMLFormElement, submitter?: SubmitEvent["submitter"]) => Promise<void>] {
   const router = useRouter();
   const [actionState, setActionState] = useState(initialState);
 
   const submit = useCallback(
-    async (form: HTMLFormElement): Promise<void> => {
+    async (form: HTMLFormElement, submitter?: SubmitEvent["submitter"]): Promise<void> => {
       // Create `Request` data
-      const formData = new FormData(form);
+      const formData = new FormData(form, submitter);
 
       const requestOptions: RequestInit = {
         redirect: "follow",
