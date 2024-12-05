@@ -62,7 +62,7 @@ export function useFormAction<T>(
       const serverData = JSON.parse(nextData).props.pageProps;
       setActionState(serverData.action);
     },
-    [router.push],
+    [router],
   );
 
   return useMemo(() => [actionState, submit] as const, [actionState, submit]);

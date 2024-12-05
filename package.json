@@ -6,6 +6,7 @@
   "scripts": {
     "predev": "node scripts/use-router.js",
     "dev": "next dev",
+    "prebuild": "node scripts/use-router.js",
     "build": "next build",
     "start": "next start",
     "lint": "prettier --ignore-path .gitignore --check . && next lint",

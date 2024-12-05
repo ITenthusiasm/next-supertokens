@@ -10,6 +10,7 @@ if (router !== "app" && router !== "pages") {
   console.error('Error: `use-router` script must be called with a valid router ("app" or "pages")\n');
   process.exitCode = 1;
 } else {
+  console.log(`\x1b[35mUsing ${capitalize(router)} Router...\x1b[0m`);
   const srcDirectory = path.resolve(root, "src");
   await removeDirectory(srcDirectory);
   await copyFiles(path.resolve(root, `templates/${router}-router`), srcDirectory);
@@ -76,4 +77,14 @@ async function copyFiles(sourceDirectory, targetDirectory) {
       return fs.copyFile(trueFilepath, path.resolve(targetDirectory, f));
     }),
   );
+}
+
+/**
+ * Capitalizes the first letter in a string
+ * @template {string} T
+ * @param {T} string
+ * @returns {Capitalize<T>}
+ */
+function capitalize(string) {
+  return /** @type {Capitalize<T>} */ (string.charAt(0).toUpperCase() + string.slice(1));
 }

@@ -15,7 +15,7 @@ export function redirect(
   status: 303 | 307 | 308,
 ): GetServerSidePropsResult<never> {
   if (request.headers[JS_REQUEST_HEADER.toLowerCase()] === "") {
-    response.statusCode === 204;
+    response.statusCode = 204;
     response.setHeader(REDIRECT_LOCATION_HEADER, url);
     response.setHeader(REDIRECT_STATUS_HEADER, String(status));
     response.end();
