@@ -142,6 +142,14 @@ If your project requires you to use the Next.js App Router, we **_strongly_** re
 
 **_If you are starting a new SSR React project, we strongly recommend using Remix instead._** At this time, the developer experience in Remix is significantly better -- especially when it comes to using tools like SuperTokens. And the performance is great as well. However, the choice is yours to make. (And of course, if you prefer Next.js, that's fine too.)
 
+### 3&rpar; Quirks with _Both_ Next.js Routers
+
+For some odd reason, it appears that all files which leverage the functions/methods defined by `supertokens-node` need to call `SuperTokens.init()`. Consequently, we've defined a server-only [`initialize.ts`](./templates/app-router/lib/server/supertokens/initialize.ts) module that calls `SuperTokens.init()` for us as a side-effect when imported.
+
+Most likely, this is either an issue related to what SuperTokens expects from its calling environment, or it's an issue related to how Next.js builds the web application (or both). It isn't clear at the moment. However, it's worth noting that these problems aren't encountered in [Remix](https://github.com/ITenthusiasm/remix-supertokens) or [SvelteKit](https://github.com/ITenthusiasm/svelte-kit-supertokens).
+
+In any case, we'll update this project once a solution that doesn't require calling `SuperTokens.init()` in multiple Next.js files is discovered. (Note that as of 2024-12-05, Next's [`instrumentation`](https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation) feature _does not_ fix this problem.)
+
 ## Frequently Asked Questions
 
 ### Why Use a Custom UI Instead of the Components Provided by SuperTokens?
