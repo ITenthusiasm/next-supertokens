@@ -142,6 +142,12 @@ If your project requires you to use the Next.js App Router, we **_strongly_** re
 
 **_If you are starting a new SSR React project, we strongly recommend using Remix instead._** At this time, the developer experience in Remix is significantly better -- especially when it comes to using tools like SuperTokens. And the performance is great as well. However, the choice is yours to make. (And of course, if you prefer Next.js, that's fine too.)
 
+#### C&rpar; Server Actions Do Not Handle 303s Perfectly
+
+There may be scenarios where a user's access token is expired (or invalid) when they try to submit a form on a secure page of your app. If their refresh token is also expired (or invalid), then they should be redirected to the Login Page with a `303`. The reason for using a `303` instead of a `307` is to prevent the user from accidentally (or maliciously) submitting data to the login form during their redirect.
+
+Unfortunately, `Next`'s Server Actions do not handle these 303s well when JavaScript is enabled on the page. (Everything works fine if JS is _disabled_.) In these instances, Next.js will basically do nothing; it won't navigate the user to the Login Page or do anything else. This will undoubtedly leave your users confused. This scenario is hopefully rare, but it is one that you should be aware of if you intend to use the App Router. (The Pages Router does not have this problem, nor does Remix.)
+
 ### 3&rpar; Quirks with _Both_ Next.js Routers
 
 For some odd reason, it appears that all files which leverage the functions/methods defined by `supertokens-node` need to call `SuperTokens.init()`. Consequently, we've defined a server-only [`initialize.ts`](./templates/app-router/lib/server/supertokens/initialize.ts) module that calls `SuperTokens.init()` for us as a side-effect when imported.
@@ -183,6 +189,12 @@ To support Server Actions!
 Unfortunately, the Next.js Pages Router does not ship with _native_ support for features like [Server Actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations) (unlike the App Router). However, it is possible to support these features by writing our own code. For example: By handling `POST` requests in the `getServerSideProps` functions, we can handle form submissions for users who don't have JavaScript enabled. And by writing a clever `fetch` helper (i.e., the custom [`useFormAction`](./templates/pages-router/lib/utils/hooks.ts) hook), we can progressively enhance the application with an improved UX for form submissions when JS is available.
 
 This technically gives us more flexibility in how our application works -- which is nice. However, it is still slightly inconvenient that we have to support the Server Actions feature ourselves.
+
+### Why Are There Symbolic Links in the `templates/pages-router/` Folder?
+
+There are some instances where the code used for the Pages Router is the exact same as the code used for the App Router. For example, `auth-form.scss` is the same in both the Pages Router _and_ the App Router. In these cases, the file in `templates/pages-router/*` will be a symbolic link to the file in `templates/app-router/*` for simplicity/maintainability.
+
+This is not something that you need to be concerned about when running the dev server or building the application; the NPM Scripts in this project already know how to resolve symbolic links while generating the `src` folder. If you don't like the symbolic links approach, you are free to replace the symbolic links with copies of the actual files.
 
 ### Can I Use Multiple Authentication Methods on the Same Page?
 
