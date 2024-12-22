@@ -11,11 +11,11 @@ If there are any questions, concerns, or ideas for improvement, feel free to rea
 Start the dev server by running `npm run dev`. **Remember to add your own `.env` file to configure SuperTokens!** You will need to configure:
 
 - `ROUTER` (e.g., `pages` or `app`)
-- `DOMAIN` (e.g., `http://localhost:5173`)
+- `DOMAIN` (e.g., `http://localhost:3000`)
 - `SUPERTOKENS_CONNECTION_URI` (e.g., `https://try.supertokens.com`)
 - `SUPERTOKENS_API_KEY` (optional if your `SUPERTOKENS_CONNECTION_URI` is `https://try.supertokens.com`)
-- `SUPERTOKENS_WEBSITE_DOMAIN` (e.g., `http://localhost:5173`)
-- `SUPERTOKENS_API_DOMAIN` (e.g., `http://localhost:5173`)
+- `SUPERTOKENS_WEBSITE_DOMAIN` (e.g., `http://localhost:3000`)
+- `SUPERTOKENS_API_DOMAIN` (e.g., `http://localhost:3000`)
 - `SUPERTOKENS_API_BASE_PATH` (e.g., `/auth`)
 
 Note that you will need to configure additional environment variables for testing the `ThirdParty` login feature. (See the usage of `SuperTokens.init()` in this project.)
